@@ -1,0 +1,66 @@
+name: Production CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  # ----------------------------------------------------------------------------
+  # Job 1: Verification & Build
+  # ----------------------------------------------------------------------------
+  verify:
+    name: Typecheck & Build Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run TypeScript Check
+        run: npm run typecheck
+
+      - name: Build Standalone Next.js
+        run: npm run build
+
+  # ----------------------------------------------------------------------------
+  # Job 2: Automated Deployment to VPS via SSH
+  # ----------------------------------------------------------------------------
+  deploy:
+    name: Deploy to VPS
+    needs: verify
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT || 22 }}
+          script: |
+            set -e
+            APP_DIR="${{ secrets.VPS_APP_DIR || '/opt/momo-shop' }}"
+            
+            echo "➜ Navigating to application directory: $APP_DIR"
+            cd "$APP_DIR"
+            
+            echo "➜ Pulling latest changes from Git..."
+            git pull origin main
+            
+            echo "➜ Building and restarting Docker containers..."
+            docker compose up -d --build --remove-orphans
+            
+            echo "➜ Cleaning up obsolete images..."
+            docker image prune -f
+            
+            echo "✓ Deployment successfully completed!"

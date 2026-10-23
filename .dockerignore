@@ -1,0 +1,10 @@
+node_modules
+.next
+_legacy
+.git
+.gitignore
+*.md
+*.log
+.env*.local
+.env
+screenshot*.png

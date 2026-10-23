@@ -1,0 +1,29 @@
+# ==============================================================================
+# momoShop - Production Caddy Reverse Proxy Configuration
+# Automatic HTTPS via Let's Encrypt / Zero Maintenance
+# ==============================================================================
+
+{
+    email {$ACME_EMAIL:contact@momoshop.sn}
+}
+
+{$DOMAIN:localhost} {
+    # Modern compression for maximum speed
+    encode zstd gzip
+
+    # Security headers
+    header {
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "DENY"
+        Referrer-Policy "strict-origin-when-cross-origin"
+        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+    }
+
+    # Reverse proxy to the Next.js application container
+    reverse_proxy app:3000 {
+        header_up Host {host}
+        header_up X-Real-IP {remote_host}
+        header_up X-Forwarded-For {remote_host}
+        header_up X-Forwarded-Proto {scheme}
+    }
+}

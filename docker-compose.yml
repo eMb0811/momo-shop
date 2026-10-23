@@ -1,0 +1,61 @@
+services:
+  # ----------------------------------------------------------------------------
+  # momoShop Next.js Application Container
+  # ----------------------------------------------------------------------------
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: momo-shop:latest
+    container_name: momoshop_app
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - HOSTNAME=0.0.0.0
+    volumes:
+      # Persistent host mounts: edit products or upload photos live without rebuilding image
+      - ./src/data:/app/src/data:rw
+      - ./public/images:/app/public/images:rw
+    expose:
+      - "3000"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3000/api/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    networks:
+      - momo-network
+
+  # ----------------------------------------------------------------------------
+  # Caddy Reverse Proxy & Automatic Let's Encrypt SSL
+  # ----------------------------------------------------------------------------
+  caddy:
+    image: caddy:2-alpine
+    container_name: momoshop_caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp" # HTTP/3 QUIC support
+    environment:
+      - DOMAIN=${DOMAIN:-localhost}
+      - ACME_EMAIL=${ACME_EMAIL:-contact@momoshop.sn}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data # Critical: persists SSL certificates across restarts
+      - caddy_config:/config
+    depends_on:
+      app:
+        condition: service_healthy
+    networks:
+      - momo-network
+
+volumes:
+  caddy_data:
+  caddy_config:
+
+networks:
+  momo-network:
+    driver: bridge

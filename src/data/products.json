@@ -1,0 +1,218 @@
+[
+  {
+    "id": "momo-001",
+    "name": "T-Shirt Noir",
+    "slug": "noir",
+    "tagline": "Coupe ajustée athlétique, col rond structuré & coton mercerisé",
+    "color": {
+      "name": "Noir",
+      "hex": "#18181A",
+      "category": "neutres"
+    },
+    "badge": "Best-Seller",
+    "price_cfa": 2500,
+    "image": "/images/mockneck_black.jpg",
+    "weight": "Coton Mercerisé Lisse & Soyeux",
+    "composition": "100% Coton peigné mercerisé haut de gamme",
+    "fit": "Coupe ajustée athlétique (Tailored Fit) manches ajustées aux biceps",
+    "collar": "Col rond structuré épais au ras du cou",
+    "dye": "Teinture réactive grand teint (noir intense longue tenue)",
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "stock": {
+      "XS": 14,
+      "S": 28,
+      "M": 45,
+      "L": 38,
+      "XL": 20,
+      "XXL": 9
+    },
+    "description": "Le t-shirt Noir à coupe ajustée athlétique. Doté d'un col rond structuré qui épouse proprement la base du cou et de manches courtes ajustées mettant en valeur les biceps, son coton mercerisé lisse offre un éclat sobre et une tenue irréprochable."
+  },
+  {
+    "id": "momo-002",
+    "name": "T-Shirt Blanc",
+    "slug": "blanc",
+    "tagline": "Blanc optique immaculé, col rond structuré & texture mercerisée",
+    "color": {
+      "name": "Blanc",
+      "hex": "#F8F8F6",
+      "category": "neutres"
+    },
+    "badge": "Éclat Mercerisé",
+    "price_cfa": 2500,
+    "image": "/images/mockneck_white.jpg",
+    "weight": "Coton Mercerisé Lisse & Opaque",
+    "composition": "100% Coton peigné mercerisé haut de gamme",
+    "fit": "Coupe ajustée athlétique (Tailored Fit) manches ajustées aux biceps",
+    "collar": "Col rond structuré épais au ras du cou",
+    "dye": "Blanc optique pur haute tenue",
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "stock": {
+      "XS": 18,
+      "S": 35,
+      "M": 50,
+      "L": 42,
+      "XL": 25,
+      "XXL": 12
+    },
+    "description": "L'incontournable t-shirt Blanc en coton mercerisé lisse. Sa coupe Tailored Fit souligne la carrure tandis que son col rond structuré apporte une allure habillée, moderne et minimaliste."
+  },
+  {
+    "id": "momo-003",
+    "name": "T-Shirt Vert Sauge",
+    "slug": "vert",
+    "tagline": "Nuance vert sauge feutrée, coupe Tailored Fit & col structuré",
+    "color": {
+      "name": "Vert Sauge",
+      "hex": "#7D8B78",
+      "category": "couleurs"
+    },
+    "badge": "Coupe Tailored",
+    "price_cfa": 2500,
+    "image": "/images/mockneck_sage.jpg",
+    "weight": "Coton Mercerisé Lisse & Respirant",
+    "composition": "100% Coton peigné mercerisé haut de gamme",
+    "fit": "Coupe ajustée athlétique (Tailored Fit) manches ajustées aux biceps",
+    "collar": "Col rond structuré épais au ras du cou",
+    "dye": "Pigments haute précision sur fil mercerisé",
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "stock": {
+      "XS": 10,
+      "S": 22,
+      "M": 34,
+      "L": 30,
+      "XL": 15,
+      "XXL": 6
+    },
+    "description": "Une teinte vert sauge contemporaine sur une maille en coton mercerisé d'une finesse remarquable. Son col rond structuré et ses manches ajustées signent une silhouette urbaine nette et soignée."
+  },
+  {
+    "id": "momo-004",
+    "name": "T-Shirt Terracotta",
+    "slug": "terracotta",
+    "tagline": "Teinte terracotta intense, col rond structuré & maille mercerisée",
+    "color": {
+      "name": "Terracotta",
+      "hex": "#B85D43",
+      "category": "couleurs"
+    },
+    "badge": "Nuance Signature",
+    "price_cfa": 2500,
+    "image": "/images/mockneck_terracotta.jpg",
+    "weight": "Coton Mercerisé Lisse & Soyeux",
+    "composition": "100% Coton peigné mercerisé haut de gamme",
+    "fit": "Coupe ajustée athlétique (Tailored Fit) manches ajustées aux biceps",
+    "collar": "Col rond structuré épais au ras du cou",
+    "dye": "Teinture grand teint lumineuse",
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "stock": {
+      "XS": 8,
+      "S": 19,
+      "M": 29,
+      "L": 27,
+      "XL": 14,
+      "XXL": 5
+    },
+    "description": "Le T-Shirt Terracotta associe la chaleur d'une nuance terre cuite vibrante à la précision d'une coupe ajustée Tailored Fit. Son col rond structuré reste parfaitement en place lavage après lavage."
+  },
+  {
+    "id": "momo-005",
+    "name": "T-Shirt Bleu Minuit",
+    "slug": "bleu",
+    "tagline": "Bleu nuit profond, col rond structuré & coton mercerisé",
+    "color": {
+      "name": "Bleu Minuit",
+      "hex": "#1F2A38",
+      "category": "neutres"
+    },
+    "badge": "Élégance Nuit",
+    "price_cfa": 2500,
+    "image": "/images/mockneck_navy.jpg",
+    "weight": "Coton Mercerisé Lisse & Soyeux",
+    "composition": "100% Coton peigné mercerisé haut de gamme",
+    "fit": "Coupe ajustée athlétique (Tailored Fit) manches ajustées aux biceps",
+    "collar": "Col rond structuré épais au ras du cou",
+    "dye": "Teinture réactive haute tenue",
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "stock": {
+      "XS": 12,
+      "S": 24,
+      "M": 38,
+      "L": 31,
+      "XL": 18,
+      "XXL": 7
+    },
+    "description": "Une nuance bleu minuit profonde magnifiée par le fini légèrement satiné du coton mercerisé. Sa coupe ajustée athlétique et son col structuré en font une pièce maîtresse du vestiaire urbain."
+  },
+  {
+    "id": "momo-006",
+    "name": "T-Shirt Jaune Safran",
+    "slug": "jaune",
+    "tagline": "Éclat solaire pop, coupe ajustée Tailored Fit & col structuré",
+    "color": {
+      "name": "Jaune Safran",
+      "hex": "#D69E3D",
+      "category": "couleurs"
+    },
+    "badge": "Édition Pop",
+    "price_cfa": 2500,
+    "image": "/images/mockneck_saffron.jpg",
+    "weight": "Coton Mercerisé Lisse & Soyeux",
+    "composition": "100% Coton peigné mercerisé haut de gamme",
+    "fit": "Coupe ajustée athlétique (Tailored Fit) manches ajustées aux biceps",
+    "collar": "Col rond structuré épais au ras du cou",
+    "dye": "Pigments haute intensité fixés à chaud",
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "stock": {
+      "XS": 7,
+      "S": 16,
+      "M": 26,
+      "L": 22,
+      "XL": 11,
+      "XXL": 4
+    },
+    "description": "Une nuance jaune safran audacieuse sur une coupe Tailored Fit à col rond structuré. Sa texture en coton mercerisé lisse capte la lumière avec élégance et modernité."
+  }
+]
