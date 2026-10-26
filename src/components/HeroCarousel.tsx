@@ -4,40 +4,22 @@ import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 
 interface HeroSlide {
-  images: {
-    src: string;
-    alt: string;
-  }[];
+  src: string;
+  alt: string;
 }
 
 const SLIDES: HeroSlide[] = [
   {
-    images: [
-      { src: '/images/mockneck_black.jpg', alt: 'T-Shirt Noir Coton Mercerisé' },
-      { src: '/images/mockneck_terracotta.jpg', alt: 'T-Shirt Terracotta Coton Mercerisé' },
-      { src: '/images/mockneck_sage.jpg', alt: 'T-Shirt Vert Sauge Coton Mercerisé' },
-    ],
+    src: '/images/hero_3d_trio.jpg',
+    alt: 'T-Shirts Momo Shop Rendu 3D avec Nuances de Fumée - Collection Coton Mercerisé',
   },
   {
-    images: [
-      { src: '/images/mockneck_navy.jpg', alt: 'T-Shirt Bleu Minuit Coton Mercerisé' },
-      { src: '/images/mockneck_saffron.jpg', alt: 'T-Shirt Jaune Safran Coton Mercerisé' },
-      { src: '/images/mockneck_white.jpg', alt: 'T-Shirt Blanc Coton Mercerisé' },
-    ],
+    src: '/images/hero_3d_black.jpg',
+    alt: 'T-Shirt Noir Minimaliste Rendu 3D Haute Définition avec Volutes de Fumée',
   },
   {
-    images: [
-      { src: '/images/mockneck_terracotta.jpg', alt: 'T-Shirt Terracotta Coton Mercerisé' },
-      { src: '/images/mockneck_black.jpg', alt: 'T-Shirt Noir Coton Mercerisé' },
-      { src: '/images/mockneck_saffron.jpg', alt: 'T-Shirt Jaune Safran Coton Mercerisé' },
-    ],
-  },
-  {
-    images: [
-      { src: '/images/mockneck_sage.jpg', alt: 'T-Shirt Vert Sauge Coton Mercerisé' },
-      { src: '/images/mockneck_navy.jpg', alt: 'T-Shirt Bleu Minuit Coton Mercerisé' },
-      { src: '/images/mockneck_white.jpg', alt: 'T-Shirt Blanc Coton Mercerisé' },
-    ],
+    src: '/images/hero_3d_terracotta.jpg',
+    alt: 'T-Shirt Terracotta Premium Rendu 3D Ambiance Studio Douce et Fumée',
   },
 ];
 
@@ -63,15 +45,15 @@ export function HeroCarousel() {
 
   return (
     <section
-      aria-label="Galerie de nos t-shirts"
-      className="pt-6 pb-8"
+      aria-label="Galerie de nos t-shirts en 3D"
+      className="pt-4 sm:pt-6 pb-6 sm:pb-8"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onTouchStart={() => setIsPaused(true)}
       onTouchEnd={() => setIsPaused(false)}
     >
       <div className="container-x">
-        <div className="relative aspect-[4/3] sm:aspect-[16/8] md:aspect-[21/9] max-h-[580px] w-full overflow-hidden rounded-2xl sm:rounded-3xl border-2 sm:border-[2.5px] border-ink bg-studio shadow-[6px_6px_0_0_var(--color-ink)] sm:shadow-[8px_8px_0_0_var(--color-ink)]">
+        <div className="relative aspect-[16/10] sm:aspect-[16/8] md:aspect-[21/9] max-h-[580px] w-full overflow-hidden rounded-2xl sm:rounded-3xl border-2 sm:border-[2.5px] border-ink bg-studio shadow-[5px_5px_0_0_var(--color-ink)] sm:shadow-[8px_8px_0_0_var(--color-ink)]">
           {/* Slides */}
           {SLIDES.map((slide, index) => {
             const isActive = index === current;
@@ -82,26 +64,17 @@ export function HeroCarousel() {
                   isActive ? 'opacity-100 z-10 pointer-events-auto' : 'opacity-0 z-0 pointer-events-none'
                 }`}
               >
-                <div className="grid h-full w-full grid-cols-1 sm:grid-cols-3">
-                  {slide.images.map((img, imgIdx) => (
-                    <div
-                      key={imgIdx}
-                      className={`relative h-full w-full overflow-hidden bg-studio ${
-                        imgIdx > 0 ? 'hidden sm:block sm:border-l-2 sm:border-ink' : ''
-                      }`}
-                    >
-                      <Image
-                        src={img.src}
-                        alt={img.alt}
-                        fill
-                        sizes="(max-width: 640px) 100vw, 33vw"
-                        priority={index === 0 && imgIdx === 0}
-                        className={`object-cover object-top transition-transform duration-1000 ease-out ${
-                          isActive ? 'scale-100' : 'scale-105'
-                        }`}
-                      />
-                    </div>
-                  ))}
+                <div className="relative h-full w-full overflow-hidden bg-studio">
+                  <Image
+                    src={slide.src}
+                    alt={slide.alt}
+                    fill
+                    priority={index === 0}
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 1320px"
+                    className={`object-cover object-center transition-transform duration-1000 ease-out ${
+                      isActive ? 'scale-100' : 'scale-105'
+                    }`}
+                  />
                 </div>
               </div>
             );
@@ -112,9 +85,9 @@ export function HeroCarousel() {
             type="button"
             onClick={prev}
             aria-label="Image précédente"
-            className="absolute left-3 sm:left-5 top-1/2 -translate-y-1/2 z-20 flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-full border-2 border-ink bg-paper/95 text-ink shadow-[2.5px_2.5px_0_0_var(--color-ink)] transition-all hover:bg-acid hover:scale-105 active:scale-95"
+            className="absolute left-2.5 sm:left-5 top-1/2 -translate-y-1/2 z-20 flex h-8 w-8 sm:h-12 sm:w-12 items-center justify-center rounded-full border-2 border-ink bg-paper/95 text-ink shadow-[2px_2px_0_0_var(--color-ink)] sm:shadow-[2.5px_2.5px_0_0_var(--color-ink)] transition-all hover:bg-acid hover:scale-105 active:scale-95"
           >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+            <svg className="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="15 18 9 12 15 6" />
             </svg>
           </button>
@@ -123,22 +96,22 @@ export function HeroCarousel() {
             type="button"
             onClick={next}
             aria-label="Image suivante"
-            className="absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 z-20 flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-full border-2 border-ink bg-paper/95 text-ink shadow-[2.5px_2.5px_0_0_var(--color-ink)] transition-all hover:bg-acid hover:scale-105 active:scale-95"
+            className="absolute right-2.5 sm:right-5 top-1/2 -translate-y-1/2 z-20 flex h-8 w-8 sm:h-12 sm:w-12 items-center justify-center rounded-full border-2 border-ink bg-paper/95 text-ink shadow-[2px_2px_0_0_var(--color-ink)] sm:shadow-[2.5px_2.5px_0_0_var(--color-ink)] transition-all hover:bg-acid hover:scale-105 active:scale-95"
           >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+            <svg className="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="9 18 15 12 9 6" />
             </svg>
           </button>
 
           {/* Progress Indicators */}
-          <div className="absolute bottom-3 sm:bottom-5 left-1/2 -translate-x-1/2 z-20 flex w-56 sm:w-64 gap-2 rounded-full border border-white/20 bg-ink/75 px-3 py-1.5 backdrop-blur-md">
+          <div className="absolute bottom-2.5 sm:bottom-5 left-1/2 -translate-x-1/2 z-20 flex w-36 sm:w-64 gap-1.5 sm:gap-2 rounded-full border border-white/25 bg-ink/80 px-2.5 sm:px-3 py-1 sm:py-1.5 backdrop-blur-md">
             {SLIDES.map((_, idx) => (
               <button
                 key={idx}
                 type="button"
                 onClick={() => setCurrent(idx)}
-                aria-label={`Aller au groupe de t-shirts ${idx + 1}`}
-                className="relative h-1.5 flex-1 overflow-hidden rounded-full bg-white/30"
+                aria-label={`Aller au t-shirt 3D ${idx + 1}`}
+                className="relative h-1 sm:h-1.5 flex-1 overflow-hidden rounded-full bg-white/30"
               >
                 {idx === current && (
                   <span

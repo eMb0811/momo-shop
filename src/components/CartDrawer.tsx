@@ -45,12 +45,12 @@ export function CartDrawer() {
       {/* Slide-over Drawer */}
       <div className="relative z-10 flex h-full w-full max-w-md flex-col border-l-2 border-ink bg-paper shadow-2xl animate-in slide-in-from-right duration-250">
         {/* Drawer Header */}
-        <div className="flex items-center justify-between border-b-2 border-ink bg-canvas px-6 py-5">
-          <div className="flex items-center gap-2.5">
-            <h3 className="font-display text-xl font-extrabold text-ink uppercase tracking-tight">
+        <div className="flex items-center justify-between border-b-2 border-ink bg-canvas px-4 sm:px-6 py-3.5 sm:py-5">
+          <div className="flex items-center gap-2 sm:gap-2.5">
+            <h3 className="font-display text-lg sm:text-xl font-extrabold text-ink uppercase tracking-tight">
               Mon Panier
             </h3>
-            <span className="rounded-full bg-coral px-2.5 py-0.5 font-mono text-xs font-bold text-white">
+            <span className="rounded-full bg-coral px-2 sm:px-2.5 py-0.5 font-mono text-[0.7rem] sm:text-xs font-bold text-white">
               {totalCount}
             </span>
           </div>
@@ -59,14 +59,14 @@ export function CartDrawer() {
             type="button"
             onClick={() => setIsCartOpen(false)}
             aria-label="Fermer le panier"
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-ink/20 text-ink hover:bg-paper transition-colors"
+            className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-ink/20 text-ink hover:bg-paper transition-colors text-xs sm:text-sm"
           >
             ✕
           </button>
         </div>
 
         {/* Drawer Body (Items List) */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-4">
+        <div className="flex-1 overflow-y-auto p-3.5 sm:p-6 space-y-3 sm:space-y-4">
           {cart.length === 0 ? (
             <div className="flex h-full flex-col items-center justify-center text-center py-12">
               <div className="flex h-16 w-16 items-center justify-center rounded-2xl border-2 border-ink bg-canvas shadow-pop mb-4">
@@ -161,12 +161,12 @@ export function CartDrawer() {
 
         {/* Drawer Footer */}
         {cart.length > 0 && (
-          <div className="border-t-2 border-ink bg-canvas p-6 space-y-4">
+          <div className="border-t-2 border-ink bg-canvas p-4 sm:p-6 space-y-3 sm:space-y-4">
             <div className="flex items-baseline justify-between">
               <span className="font-mono text-xs font-bold text-muted uppercase tracking-wider">
                 Total ({totalCount} articles)
               </span>
-              <span className="font-display text-2xl font-black text-ink">
+              <span className="font-display text-xl sm:text-2xl font-black text-ink">
                 {formatPrice(totalPrice)}
               </span>
             </div>
@@ -174,15 +174,15 @@ export function CartDrawer() {
             <button
               type="button"
               onClick={handleGroupedWhatsAppOrder}
-              className="btn-whatsapp w-full text-sm"
+              className="btn-whatsapp w-full min-h-[2.6rem] sm:min-h-[3rem] text-xs sm:text-sm py-2 px-3 sm:px-6"
             >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <svg className="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.969.54 1.772.84 2.791.84 3.184 0 5.77-2.587 5.77-5.766.001-3.182-2.585-5.766-5.77-5.766zm9.969 5.766c0 5.518-4.482 10-10 10-1.745 0-3.376-.452-4.805-1.242l-7.195 1.886 1.921-7.017c-.86-1.468-1.353-3.181-1.353-5.008 0-5.518 4.482-10 10-10 5.518 0 10 4.482 10 10z"/>
               </svg>
               <span>Commander tout sur WhatsApp</span>
             </button>
 
-            <p className="text-center font-mono text-[0.68rem] text-muted">
+            <p className="text-center font-mono text-[0.65rem] sm:text-[0.68rem] text-muted">
               Paiement à la livraison • Échange direct avec notre service client
             </p>
           </div>

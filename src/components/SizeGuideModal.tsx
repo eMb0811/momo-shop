@@ -23,7 +23,7 @@ export function SizeGuideModal({ isOpen, onClose }: SizeGuideModalProps) {
     <div
       role="dialog"
       aria-modal="true"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center p-2.5 sm:p-4"
     >
       {/* Backdrop */}
       <div
@@ -32,23 +32,23 @@ export function SizeGuideModal({ isOpen, onClose }: SizeGuideModalProps) {
       />
 
       {/* Modal Dialog */}
-      <div className="relative z-10 w-full max-w-2xl overflow-hidden rounded-3xl border-2 border-ink bg-paper p-6 sm:p-8 shadow-[10px_10px_0_0_var(--color-ink)] animate-in fade-in zoom-in-95 duration-200">
+      <div className="relative z-10 w-full max-w-2xl max-h-[92vh] overflow-y-auto rounded-2xl sm:rounded-3xl border-2 border-ink bg-paper p-4 sm:p-8 shadow-[6px_6px_0_0_var(--color-ink)] sm:shadow-[10px_10px_0_0_var(--color-ink)] animate-in fade-in zoom-in-95 duration-200">
         {/* Close Button */}
         <button
           type="button"
           onClick={onClose}
           aria-label="Fermer le guide des tailles"
-          className="absolute right-5 top-5 flex h-10 w-10 items-center justify-center rounded-full border border-ink/20 text-ink hover:bg-canvas transition-colors"
+          className="absolute right-3.5 top-3.5 sm:right-5 sm:top-5 flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-full border border-ink/20 text-ink hover:bg-canvas transition-colors text-xs sm:text-base"
         >
           ✕
         </button>
 
         {/* Header */}
-        <div className="eyebrow mb-2">GUIDE TECHNIQUE</div>
-        <h2 className="font-display text-2xl sm:text-3xl font-extrabold text-ink uppercase tracking-tight">
+        <div className="eyebrow mb-2 text-[0.65rem] sm:text-[0.72rem] py-1 px-3">GUIDE TECHNIQUE</div>
+        <h2 className="font-display text-xl sm:text-3xl font-extrabold text-ink uppercase tracking-tight pr-8 sm:pr-0">
           Guide des Tailles — Coupe Ajustée
         </h2>
-        <p className="mt-2 text-sm text-muted leading-relaxed">
+        <p className="mt-2 text-xs sm:text-sm text-muted leading-relaxed">
           Nos t-shirts en pur coton mercerisé sont conçus avec une coupe ajustée athlétique (Tailored Fit) : col rond structuré au ras du cou et manches courtes épousant les biceps. Choisissez votre taille habituelle pour un tombé ajusté, ou une taille au-dessus pour un porté plus décontracté.
         </p>
 
