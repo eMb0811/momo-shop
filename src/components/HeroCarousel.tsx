@@ -53,7 +53,7 @@ export function HeroCarousel() {
       onTouchEnd={() => setIsPaused(false)}
     >
       <div className="container-x">
-        <div className="relative aspect-[16/10] sm:aspect-[16/8] md:aspect-[21/9] max-h-[580px] w-full overflow-hidden rounded-2xl sm:rounded-3xl border-2 sm:border-[2.5px] border-ink bg-studio shadow-[5px_5px_0_0_var(--color-ink)] sm:shadow-[8px_8px_0_0_var(--color-ink)]">
+        <div className="relative aspect-[16/10] sm:aspect-[16/8] md:aspect-[21/9] max-h-[580px] w-full overflow-hidden rounded-2xl sm:rounded-3xl border-2 sm:border-[2.5px] border-ink bg-[#141416] shadow-[5px_5px_0_0_var(--color-ink)] sm:shadow-[8px_8px_0_0_var(--color-ink)]">
           {/* Slides */}
           {SLIDES.map((slide, index) => {
             const isActive = index === current;
@@ -64,7 +64,7 @@ export function HeroCarousel() {
                   isActive ? 'opacity-100 z-10 pointer-events-auto' : 'opacity-0 z-0 pointer-events-none'
                 }`}
               >
-                <div className="relative h-full w-full overflow-hidden bg-studio">
+                <div className="relative h-full w-full overflow-hidden bg-[#141416]">
                   <Image
                     src={slide.src}
                     alt={slide.alt}
