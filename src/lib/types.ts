@@ -1,6 +1,6 @@
 export type Size = 'XS' | 'S' | 'M' | 'L' | 'XL' | 'XXL';
 
-export type ColorCategory = 'neutres' | 'couleurs';
+export type ColorCategory = 'neutres' | 'pop' | 'nature';
 
 export interface ProductColor {
   name: string;

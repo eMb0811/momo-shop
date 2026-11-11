@@ -22,6 +22,10 @@ export function CatalogueSection({ products }: CatalogueSectionProps) {
     return p.color.category === filter;
   });
 
+  const neutresCount = products.filter((p) => p.color.category === 'neutres').length;
+  const popCount = products.filter((p) => p.color.category === 'pop').length;
+  const natureCount = products.filter((p) => p.color.category === 'nature').length;
+
   const handleOpenProduct = (product: Product) => {
     setSelectedProduct(product);
     setIsModalOpen(true);
@@ -65,18 +69,29 @@ export function CatalogueSection({ products }: CatalogueSectionProps) {
                   : 'border-ink bg-paper text-ink hover:bg-canvas'
               }`}
             >
-              Neutres
+              Neutres & Basiques ({neutresCount})
             </button>
             <button
               type="button"
-              onClick={() => setFilter('couleurs')}
+              onClick={() => setFilter('pop')}
               className={`rounded-full border-2 px-3 sm:px-4 py-1.5 sm:py-2 font-mono text-[0.72rem] sm:text-xs font-bold uppercase transition-all ${
-                filter === 'couleurs'
+                filter === 'pop'
                   ? 'border-ink bg-coral text-white shadow-pop'
                   : 'border-ink bg-paper text-ink hover:bg-canvas'
               }`}
             >
-              Chaudes & Vives
+              Vives & Pop ({popCount})
+            </button>
+            <button
+              type="button"
+              onClick={() => setFilter('nature')}
+              className={`rounded-full border-2 px-3 sm:px-4 py-1.5 sm:py-2 font-mono text-[0.72rem] sm:text-xs font-bold uppercase transition-all ${
+                filter === 'nature'
+                  ? 'border-ink bg-coral text-white shadow-pop'
+                  : 'border-ink bg-paper text-ink hover:bg-canvas'
+              }`}
+            >
+              Nature & Douces ({natureCount})
             </button>
           </div>
         </div>

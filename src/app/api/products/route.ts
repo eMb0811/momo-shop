@@ -4,7 +4,7 @@ import type { CategoryFilter } from '@/lib/types';
 
 export const dynamic = 'force-dynamic';
 
-const VALID: CategoryFilter[] = ['all', 'neutres', 'couleurs'];
+const VALID: CategoryFilter[] = ['all', 'neutres', 'pop', 'nature'];
 
 export function GET(req: NextRequest) {
   const param = req.nextUrl.searchParams.get('category') ?? 'all';

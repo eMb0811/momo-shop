@@ -54,12 +54,12 @@ export function Footer({ onOpenSizeGuide }: FooterProps) {
               Nuances Disponibles
             </h4>
             <ul className="space-y-2 text-xs sm:text-sm text-muted">
-              <li><Link href="#catalogue" className="hover:text-coral transition-colors">T-Shirt Noir</Link></li>
-              <li><Link href="#catalogue" className="hover:text-coral transition-colors">T-Shirt Blanc</Link></li>
-              <li><Link href="#catalogue" className="hover:text-coral transition-colors">T-Shirt Vert Sauge</Link></li>
-              <li><Link href="#catalogue" className="hover:text-coral transition-colors">T-Shirt Terracotta</Link></li>
-              <li><Link href="#catalogue" className="hover:text-coral transition-colors">T-Shirt Bleu Minuit</Link></li>
-              <li><Link href="#catalogue" className="hover:text-coral transition-colors">T-Shirt Jaune Safran</Link></li>
+              <li><Link href="#catalogue" className="hover:text-coral transition-colors">Vert Forêt & Émeraude</Link></li>
+              <li><Link href="#catalogue" className="hover:text-coral transition-colors">Bleu Royal & Bleu Ciel</Link></li>
+              <li><Link href="#catalogue" className="hover:text-coral transition-colors">Bordeaux & Rose Poudré</Link></li>
+              <li><Link href="#catalogue" className="hover:text-coral transition-colors">Orange Vif & Safran</Link></li>
+              <li><Link href="#catalogue" className="hover:text-coral transition-colors">Noir & Blanc Pur</Link></li>
+              <li><Link href="#catalogue" className="font-bold text-coral hover:underline">Voir les 21 nuances →</Link></li>
             </ul>
           </div>
 
