@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>momoShop — Architecture, Stack & Observabilité</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ============ Sprite d'icônes SVG inline ============ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-tshirt" viewBox="0 0 24 24"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></symbol>
+    <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></symbol>
+    <symbol id="i-server" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><path d="M6 6h.01M6 18h.01"/></symbol>
+    <symbol id="i-docker" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="4"/><path d="M7 10h2v2H7zm4 0h2v2h-2zm4 0h2v2h-2zm-8 4h2v2H7zm4 0h2v2h-2zm4 0h2v2h-2z"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-zap" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></symbol>
+    <symbol id="i-activity" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></symbol>
+    <symbol id="i-dollar" viewBox="0 0 24 24"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></symbol>
+    <symbol id="i-whatsapp" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.969.54 1.772.84 2.791.84 3.184 0 5.77-2.587 5.77-5.766.001-3.182-2.585-5.766-5.77-5.766zm9.969 5.766c0 5.518-4.482 10-10 10-1.745 0-3.376-.452-4.805-1.242l-7.195 1.886 1.921-7.017c-.86-1.468-1.353-3.181-1.353-5.008 0-5.518 4.482-10 10-10 5.518 0 10 4.482 10 10z"/></symbol>
+    <symbol id="i-cpu" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"/></symbol>
+    <symbol id="i-terminal" viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><path d="M12 19h8"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+    <symbol id="i-rocket" viewBox="0 0 24 24"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></symbol>
+  </defs>
+</svg>
+
+<div id="stage">
+<div class="deck" id="deck">
+  <div class="deck-bg"><span class="blob b1"></span><span class="blob b2"></span></div>
+  <div class="phasebar" id="phasebar"></div>
+
+  <!-- ===================================================== -->
+  <!-- 1 · ACCROCHE & TITRE                                  -->
+  <!-- ===================================================== -->
+  <section class="slide s-title" id="s1" data-phase="awareness" data-title="Titre · momoShop" data-end="0:30">
+    <div class="hero">
+      <p class="eyebrow">Architecture E-Commerce · Next.js 15 & Observabilité</p>
+      <h1 class="typewriter" data-text="De la confection textile au monitoring temps réel."></h1>
+      <div class="hero-sub">
+        <div class="brand"><svg class="i"><use href="#i-tshirt"/></svg><span>Boutique Urbaine <strong>momoShop Sénégal 🇸🇳</strong></span></div>
+        <p class="author">Présentation Technique · Architecture Full-Stack, Docker & Observabilité Sans Cookie</p>
+      </div>
+    </div>
+    <div class="orbit-art" aria-hidden="true">
+      <div class="ring r1"><span><svg class="i"><use href="#i-whatsapp"/></svg></span></div>
+      <div class="ring r2"><span><svg class="i"><use href="#i-docker"/></svg></span></div>
+      <div class="ring r3"><span><svg class="i"><use href="#i-activity"/></svg></span></div>
+      <div class="core"><svg class="i"><use href="#i-tshirt"/></svg></div>
+    </div>
+    <p class="hint">→ / Espace : avancer · S : vue présentateur · F : plein écran · O : sommaire · ? : aide</p>
+    <aside class="notes">
+      <p>Bienvenue dans la présentation d'architecture de <b>momoShop</b>.</p>
+      <p>Nous allons explorer comment une boutique e-commerce moderne à Dakar combine une interface Next.js 15, un tunnel WhatsApp fluide, une infrastructure Docker/Caddy et un moteur de monitoring sans cookie.</p>
+    </aside>
+  </section>
+
+  <!-- ===================================================== -->
+  <!-- 2 · LE BESOIN & LA PROPOSITION DE VALEUR               -->
+  <!-- ===================================================== -->
+  <section class="slide" id="s2" data-phase="awareness" data-title="La Proposition de Valeur" data-end="1:15">
+    <header>
+      <span class="kicker">Awareness · Le Projet</span>
+      <h2>L'Excellence du T-Shirt <span class="hl">Coton Mercerisé</span></h2>
+    </header>
+    <div class="cols c-2-1">
+      <div class="card">
+        <h4>Spécifications Techniques Produit</h4>
+        <div class="stack" style="gap:16px;">
+          <div class="fact"><b>21</b> nuances exclusives (Neutres, Pop & Vives, Nature & Douces)</div>
+          <div class="fact"><b>100% Coton Peigné Mercerisé</b> · Finition soyeuse et éclat durable</div>
+          <div class="fact"><b>Coupe Athlétique Ajustée</b> · Col rond structuré au ras du cou</div>
+          <div class="fact"><b>6 Tailles</b> · XS, S, M, L, XL, XXL avec guide de mensurations interactif</div>
+        </div>
+      </div>
+      <div class="stack">
+        <div class="card">
+          <h4>Tunnel d'Achat Local</h4>
+          <p style="font-size:16px;line-height:1.6;color:var(--muted)">Zéro inscription obligatoire. Le panier persistant permet la commande groupée directement sur <b>WhatsApp</b> avec calcul automatique du montant en <b>FCFA</b>.</p>
+        </div>
+        <div class="chip"><svg class="i"><use href="#i-check"/></svg> Paiement à la livraison à Dakar & Régions</div>
+      </div>
+    </div>
+    <aside class="notes">
+      <p>momoShop est spécialisée dans les t-shirts haut de gamme. Le tunnel de conversion a été pensé pour le marché sénégalais : direct, sans friction, 100% WhatsApp.</p>
+    </aside>
+  </section>
+
+  <!-- ===================================================== -->
+  <!-- 3 · STACK TECHNIQUE GLOBALE                           -->
+  <!-- ===================================================== -->
+  <section class="slide" id="s3" data-phase="consideration" data-title="Stack Technique & Définitions" data-end="2:10">
+    <header>
+      <span class="kicker">Architecture · Stack Technique</span>
+      <h2>Les 4 Piliers Technologiques <span class="hl">momoShop</span></h2>
+    </header>
+    <div class="stats">
+      <div class="stat"><div class="num" data-count="15" data-prefix="Next.js ">15</div><p>App Router Full-Stack<br><small>SSR + API Routes hybrides</small></p></div>
+      <div class="stat"><div class="num" data-count="130" data-suffix=" Mo">0</div><p>Conteneur Docker Standalone<br><small>Node 22 Alpine ultra-léger</small></p></div>
+      <div class="stat"><div class="num" data-count="100" data-suffix=" %">0</div><p>SSL Automatique Let's Encrypt<br><small>Propulsé par Caddy 2 Reverse Proxy</small></p></div>
+    </div>
+    <div class="cols c-1-1 grow">
+      <div class="card">
+        <h4>Frontend & Backend Hybride</h4>
+        <p style="font-size:15px;line-height:1.6;color:var(--text)"><b>Next.js 15 & React 19</b> : Gère simultanément l'affichage ultra-rapide des fiches produit et les endpoints d'observabilité (<code>/api/health</code>, <code>/api/monitoring/track</code>) sous un seul processus.</p>
+        <p style="font-size:15px;line-height:1.6;color:var(--text);margin-top:10px;"><b>Tailwind CSS v4</b> : Styles atomiques optimisés avec polices variables locales (<code>Syne</code>, <code>Plus Jakarta Sans</code>, <code>Space Grotesk</code>).</p>
+      </div>
+      <div class="card">
+        <h4>Infrastructure & Déploiement</h4>
+        <p style="font-size:15px;line-height:1.6;color:var(--text)"><b>Caddy Reverse Proxy</b> : Remplace Nginx. Gère HTTP/3, compresse en Zstandard/Gzip et renouvelle le certificat SSL sans aucune intervention.</p>
+        <p style="font-size:15px;line-height:1.6;color:var(--text);margin-top:10px;"><b>GitHub Actions CI/CD</b> : Pipeline automatisé avec build isolé et déploiement SSH sans coupure sur le serveur VPS.</p>
+      </div>
+    </div>
+    <aside class="notes">
+      <p>Présenter les technologies : Next.js 15 unifie le front et le back. Caddy apporte le HTTPS automatique. Docker permet une portabilité totale sur VPS.</p>
+    </aside>
+  </section>
+
+  <!-- ===================================================== -->
+  <!-- 4 · OBSERVABILITÉ SANS COOKIE                         -->
+  <!-- ===================================================== -->
+  <section class="slide" id="s4" data-phase="consideration" data-title="Moteur d'Observabilité Sans Cookie" data-end="3:15">
+    <header>
+      <span class="kicker">Innovation · Privacy-First</span>
+      <h2>Monitoring & Analytics <span class="hl">Sans Cookie</span></h2>
+    </header>
+    <div class="cols c-1-1">
+      <div class="card">
+        <h4>Le Fonctionnement Technique (momoPulse)</h4>
+        <div class="stack" style="gap:14px;">
+          <div class="fact"><b>1. Balise Asynchrone</b> · <code>navigator.sendBeacon</code> envoie les événements sans ralentir la navigation.</div>
+          <div class="fact"><b>2. Hash SHA-256 Quotidien</b> · <code>IP + UserAgent + Sel du jour</code> = Identifiant anonyme sur 24h. Zéro cookie écrit chez le visiteur.</div>
+          <div class="fact"><b>3. Stockage Atomique</b> · Données écrites dans <code>src/data/monitoring.json</code> avec rotation auto sur 90 jours.</div>
+        </div>
+      </div>
+      <div class="card">
+        <h4>Métriques Clés Surveillées</h4>
+        <div class="mbars">
+          <div class="mbar"><span>Pages Vues</span><span class="track"><i data-v="85"></i></span><b>Trafic</b></div>
+          <div class="mbar other"><span>Ajouts Panier</span><span class="track"><i data-v="50"></i></span><b>Intention</b></div>
+          <div class="mbar other"><span>Clics WhatsApp</span><span class="track"><i data-v="25"></i></span><b>Conversions</b></div>
+          <div class="mbar other"><span>Volume Potentiel</span><span class="track"><i data-v="95"></i></span><b>FCFA</b></div>
+        </div>
+      </div>
+    </div>
+    <aside class="notes">
+      <p>Expliquer l'avantage concurrentiel : conformité RGPD native, aucun bandeau de cookies intrusif, mesure exacte de 100% du trafic.</p>
+    </aside>
+  </section>
+
+  <!-- ===================================================== -->
+  <!-- 5 · LA CONSOLE PRIVÉE /monitoring                     -->
+  <!-- ===================================================== -->
+  <section class="slide" id="s5" data-phase="decision" data-title="Console Privée /monitoring" data-end="4:15">
+    <header>
+      <span class="kicker">Sécurité & Administration</span>
+      <h2>Dashboard Administrateur <span class="hl">momoPulse</span></h2>
+    </header>
+    <div class="cols c-1-1">
+      <div class="card">
+        <h4>4 Onglets de Pilotage E-Commerce</h4>
+        <div class="stack" style="gap:12px;">
+          <div class="fact"><b>📊 Vue d'ensemble & Entonnoir</b> · Visiteurs, conversions, demande par taille (XS-XXL) et appareils (Mobile/Desktop).</div>
+          <div class="fact"><b>🖥️ Infrastructure & Docker</b> · Jauge RAM OS/Node.js, charge CPU, uptime conteneur et sonde <code>/api/health</code>.</div>
+          <div class="fact"><b>👕 Stocks & Prix en Direct</b> · Ajustement direct des stocks et prix sans connexion SSH au serveur.</div>
+          <div class="fact"><b>⚡ Flux Temps Réel & Erreurs</b> · 60 derniers événements visiteurs et journal d'exceptions client/serveur.</div>
+        </div>
+      </div>
+      <div class="card">
+        <h4>Sécurité Exclusive Administrateur</h4>
+        <div class="stack" style="gap:12px;">
+          <div class="chip"><svg class="i"><use href="#i-shield"/></svg> Aucun lien public dans le site · URL masquée</div>
+          <div class="chip"><svg class="i"><use href="#i-lock"/></svg> Protection anti brute-force : 15 min de ban après 5 échecs</div>
+          <div class="chip"><svg class="i"><use href="#i-check"/></svg> Session signée HttpOnly SameSite=Strict en HTTPS</div>
+          <div class="chip"><svg class="i"><use href="#i-shield"/></svg> Balises meta noindex, nofollow pour Google</div>
+        </div>
+      </div>
+    </div>
+    <aside class="notes">
+      <p>Présenter la console d'administration. L'administrateur peut réajuster ses stocks et prix en 1 clic sans toucher au terminal du serveur.</p>
+    </aside>
+  </section>
+
+  <!-- ===================================================== -->
+  <!-- 6 · RETOUR SUR LE DÉPLOIEMENT & PANNES                -->
+  <!-- ===================================================== -->
+  <section class="slide" id="s6" data-phase="decision" data-title="DevOps & Résolution des Pannes" data-end="5:15">
+    <header>
+      <span class="kicker">DevOps · Expérience Réelle</span>
+      <h2>Résolution des Incidents <span class="hl">CI/CD & Docker</span></h2>
+    </header>
+    <div class="cols c-1-1">
+      <div class="card">
+        <h4 style="color:var(--aware)">Incident CI/CD : next/font/google</h4>
+        <p style="font-size:15px;line-height:1.6;color:var(--muted)">Sur les serveurs GitHub Actions Ubuntu, le téléchargement des polices Google échouait avec une erreur <code>TypeError: null (reading '1')</code>.</p>
+        <div class="chip" style="margin-top:14px;"><svg class="i"><use href="#i-check"/></svg> Solution : Polices variables WOFF2 auto-hébergées dans <code>src/app/fonts/</code> avec <code>next/font/local</code>. Build 100% autonome et hors-ligne.</div>
+      </div>
+      <div class="card">
+        <h4 style="color:var(--consider)">Permissions Volumes Docker VPS</h4>
+        <p style="font-size:15px;line-height:1.6;color:var(--muted)">Le conteneur Node.js tournant sous l'utilisateur non-root <code>nextjs</code> (UID 1001), les fichiers créés par Docker sur le volume <code>src/data</code> pouvaient lever des restrictions chmod.</p>
+        <div class="chip" style="margin-top:14px;"><svg class="i"><use href="#i-check"/></svg> Solution : Normalisation des permissions dans <code>deploy.yml</code> (tolérance non-bloquante) assurant la persistance de <code>monitoring.json</code>.</div>
+      </div>
+    </div>
+    <aside class="notes">
+      <p>Montrer la rigueur technique : les problèmes d'intégration continue ont été identifiés, corrigés et documentés.</p>
+    </aside>
+  </section>
+
+  <!-- ===================================================== -->
+  <!-- 7 · AXES D'AMÉLIORATION FUTURS                        -->
+  <!-- ===================================================== -->
+  <section class="slide" id="s7" data-phase="annex" data-title="Roadmap & Améliorations Futures" data-end="6:00">
+    <header>
+      <span class="kicker">Roadmap · Perspectives</span>
+      <h2>Points d'Amélioration & <span class="hl">Prochaines Étapes</span></h2>
+    </header>
+    <div class="cols c-1-1">
+      <div class="card">
+        <h4>1. Paiement Mobile Money Direct</h4>
+        <p style="font-size:15px;line-height:1.6;color:var(--muted)">Intégration d'une passerelle locale (Wave Checkout API ou Orange Money Web Payment) pour sécuriser des acomptes ou règlements immédiats en ligne.</p>
+        <h4 style="margin-top:20px;">2. Webhook Alertes Actif</h4>
+        <p style="font-size:15px;line-height:1.6;color:var(--muted)">Renseigner <code>ALERT_WEBHOOK_URL</code> dans le <code>.env</code> du serveur pour recevoir un message push sur Discord ou Telegram à chaque clic WhatsApp.</p>
+      </div>
+      <div class="card">
+        <h4>3. Migration Base Relationnelle</h4>
+        <p style="font-size:15px;line-height:1.6;color:var(--muted)">Migration du catalogue JSON vers PostgreSQL / Supabase lors du passage à l'échelle (plusieurs dizaines de commandes par jour).</p>
+        <h4 style="margin-top:20px;">4. Module Suivi de Colis</h4>
+        <p style="font-size:15px;line-height:1.6;color:var(--muted)">Création d'une route publique <code>/suivi/[code]</code> permettant aux clients de suivre l'expédition de leurs t-shirts à Dakar en temps réel.</p>
+      </div>
+    </div>
+    <aside class="notes">
+      <p>Conclure avec la vision à long terme : transformer momoShop en un écosystème e-commerce autonome de référence.</p>
+    </aside>
+  </section>
+
+  <div class="deck-footer"><span class="brandmini"><svg class="i"><use href="#i-tshirt"/></svg> momoShop Architecture & Monitoring</span><span id="pageNum"></span></div>
+</div>
+</div>
+
+<!-- ============ Interface présentateur & overlays ============ -->
+<div id="timer" class="timer-badge"></div>
+
+<div id="speaker" class="speaker-panel">
+  <div class="sp-top">
+    <div class="sp-clock"><span id="spElapsed">0:00</span><small>/ 6:00</small></div>
+    <div class="sp-btns"><button class="btn ghost" data-action="timer">⏯ Pause</button><button class="btn ghost" data-action="reset">↺ Reset</button></div>
+  </div>
+  <div class="sp-target">Fin prévue de cette slide : <b id="spTarget">0:30</b> <span id="spDelta"></span></div>
+  <div class="sp-meta"><span id="spPhase"></span><span id="spNum"></span><span id="spStep"></span></div>
+  <h3 id="spTitle"></h3>
+  <div id="spNotes" class="sp-notes"></div>
+  <div class="sp-next">Suivante : <b id="spNext"></b></div>
+</div>
+
+<div id="overview" class="overlay">
+  <div class="ov-panel">
+    <div class="ov-head"><h3>Sommaire de la Présentation</h3><button class="btn ghost" data-action="close">✕ Fermer</button></div>
+    <div class="ov-grid"></div>
+  </div>
+</div>
+
+<div id="help" class="overlay">
+  <div class="ov-panel help-panel">
+    <div class="ov-head"><h3>Raccourcis Clavier</h3><button class="btn ghost" data-action="close">✕ Fermer</button></div>
+    <div class="help-list">
+      <span><kbd>→</kbd> <kbd>Espace</kbd> <kbd>PageDown</kbd></span><span>Slide / étape suivante</span>
+      <span><kbd>←</kbd> <kbd>PageUp</kbd></span><span>Slide / étape précédente</span>
+      <span><kbd>S</kbd></span><span>Mode présentateur (notes d'animation + chrono)</span>
+      <span><kbd>F</kbd></span><span>Plein écran</span>
+      <span><kbd>O</kbd></span><span>Sommaire visuel de toutes les slides</span>
+      <span><kbd>T</kbd></span><span>Afficher / masquer le chrono</span>
+      <span><kbd>B</kbd></span><span>Écran noir (Blackout)</span>
+    </div>
+  </div>
+</div>
+
+<div id="blackout"></div>
+<div class="navbtns"><button data-action="prev" aria-label="Précédent">‹</button><button data-action="next" aria-label="Suivant">›</button></div>
+
+<script src="js/main.js"></script>
+</body>
+</html>
