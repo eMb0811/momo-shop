@@ -38,7 +38,7 @@ RUN addgroup --system --gid 1001 nodejs && \
 
 # Copy public assets and static files
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/src/data ./src/data
+COPY --from=builder --chown=nextjs:nodejs /app/src/data ./src/data
 
 # Set correct permissions for Next.js prerender cache and standalone build
 RUN mkdir .next && chown nextjs:nodejs .next

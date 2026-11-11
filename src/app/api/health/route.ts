@@ -1,10 +1,16 @@
 import { NextResponse } from 'next/server';
+import { getSystemHealthReport } from '@/lib/monitoring';
+
+export const dynamic = 'force-dynamic';
 
 export function GET() {
-  return NextResponse.json({
-    status: 'healthy',
-    app: 'momoShop (Next.js + TypeScript)',
-    version: '3.0.0',
-    timestamp: new Date().toISOString(),
+  const report = getSystemHealthReport(true);
+  const httpStatus = report.status === 'unhealthy' ? 503 : 200;
+
+  return NextResponse.json(report, {
+    status: httpStatus,
+    headers: {
+      'Cache-Control': 'no-store, no-cache, must-revalidate',
+    },
   });
 }

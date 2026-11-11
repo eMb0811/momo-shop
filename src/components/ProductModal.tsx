@@ -5,6 +5,7 @@ import Image from 'next/image';
 import type { Product, Size } from '@/lib/types';
 import { formatPrice, productOrderMessage, whatsappUrl } from '@/lib/shop';
 import { useCart } from '@/context/CartContext';
+import { trackEvent } from '@/lib/tracker';
 
 interface ProductModalProps {
   product: Product | null;
@@ -54,6 +55,16 @@ export function ProductModal({
   const isOutOfStock = currentStock === 0;
 
   const handleWhatsAppOrder = () => {
+    trackEvent({
+      type: 'whatsapp_product_order',
+      productId: product.id,
+      productName: product.name,
+      colorName: product.color.name,
+      colorHex: product.color.hex,
+      size: selectedSize,
+      qty,
+      amountCfa: product.price_cfa * qty,
+    });
     const text = productOrderMessage(product, selectedSize, qty);
     window.open(whatsappUrl(text), '_blank');
   };

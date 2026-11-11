@@ -13,6 +13,8 @@ services:
       - NODE_ENV=production
       - PORT=3000
       - HOSTNAME=0.0.0.0
+      - MONITORING_PASSWORD=${MONITORING_PASSWORD:-momoshop-admin-2026}
+      - ALERT_WEBHOOK_URL=${ALERT_WEBHOOK_URL:-}
     volumes:
       # Persistent host mounts: edit products or upload photos live without rebuilding image
       - ./src/data:/app/src/data:rw

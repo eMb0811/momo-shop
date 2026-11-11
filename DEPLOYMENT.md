@@ -41,10 +41,12 @@ Créez le fichier `.env` sur le serveur :
 cp .env.example .env
 nano .env
 ```
-Modifiez les valeurs avec votre domaine DuckDNS et votre email :
+Modifiez les valeurs avec votre domaine DuckDNS, votre email et vos paramètres de monitoring :
 ```env
 DOMAIN=momoshop.duckdns.org
 ACME_EMAIL=votre-email@gmail.com
+MONITORING_PASSWORD=votre-mot-de-passe-secret
+ALERT_WEBHOOK_URL=https://discord.com/api/webhooks/...
 ```
 *(Sauvegardez avec `Ctrl + O` puis quittez avec `Ctrl + X`)*
 
@@ -115,3 +117,20 @@ Grâce aux volumes Docker montés (`./src/data` et `./public/images`) :
   ```bash
   docker compose ps
   ```
+
+---
+
+## 6. Console de Monitoring, Analytics & Alertes (`/monitoring`)
+
+Une console de supervision complète est intégrée directement dans **momoShop** sur la route `/monitoring` :
+
+1. **Audience & Conversions (Sans Cookie)** :
+   - Suivi respectueux de la vie privée (hash SHA-256 quotidien sans bandeau cookie).
+   - Entonnoir complet : Visites → Ouvertures fiches produit → Ajouts au panier → Clics commandes WhatsApp (avec volume en FCFA, répartition des tailles `XS` à `XXL`, appareils Mobile/Desktop et sources de trafic).
+2. **Santé Serveur & Docker (`/api/health`)** :
+   - Surveillance de la RAM (OS et Node.js RSS/Heap), charge CPU, uptime du conteneur, intégrité de `src/data/products.json` et présence des images dans `public/images/`.
+3. **Gestion des Stocks & Prix en Direct** :
+   - Éditez les stocks par taille et les prix FCFA directement depuis l'onglet **Stocks & Prix** sur `/monitoring` sans avoir besoin de vous connecter en SSH.
+4. **Alertes Temps Réel & Sonde Uptime Externe** :
+   - Renseignez `ALERT_WEBHOOK_URL` dans `.env` (compatible **Discord**, **Slack**, **Telegram** ou Webhook JSON) pour être alerté immédiatement lors d'une intention de commande WhatsApp, d'un stock bas/épuisé ou d'une erreur critique.
+   - Le workflow `.github/workflows/uptime-monitor.yml` interroge `/api/health` de l'extérieur toutes les 15 minutes (vous pouvez ajouter `PRODUCTION_URL` et `ALERT_WEBHOOK_URL` dans vos secrets GitHub Actions) et compatible avec UptimeRobot.

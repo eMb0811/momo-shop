@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 import Image from 'next/image';
 import { useCart } from '@/context/CartContext';
 import { cartOrderMessage, formatPrice, whatsappUrl } from '@/lib/shop';
+import { trackEvent } from '@/lib/tracker';
 
 export function CartDrawer() {
   const { cart, isCartOpen, setIsCartOpen, updateQty, removeFromCart, totalCount, totalPrice } = useCart();
@@ -26,6 +27,12 @@ export function CartDrawer() {
 
   const handleGroupedWhatsAppOrder = () => {
     if (cart.length === 0) return;
+    trackEvent({
+      type: 'whatsapp_cart_order',
+      productName: cart.map((i) => `${i.name} (${i.size}×${i.qty})`).join(', '),
+      itemsCount: totalCount,
+      amountCfa: totalPrice,
+    });
     const msg = cartOrderMessage(cart);
     window.open(whatsappUrl(msg), '_blank');
   };

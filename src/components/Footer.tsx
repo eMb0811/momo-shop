@@ -128,6 +128,9 @@ export function Footer({ onOpenSizeGuide }: FooterProps) {
             <Link href="/confidentialite" className="hover:text-ink transition-colors">
               Confidentialité
             </Link>
+            <Link href="/monitoring" className="hover:text-coral transition-colors">
+              Monitoring
+            </Link>
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import type { Product } from '@/lib/types';
 import { CartProvider } from '@/context/CartContext';
 import { Header } from '@/components/Header';
@@ -11,6 +11,7 @@ import { CartDrawer } from '@/components/CartDrawer';
 import { FloatingWhatsApp } from '@/components/FloatingWhatsApp';
 import { Footer } from '@/components/Footer';
 import { SizeGuideModal } from '@/components/SizeGuideModal';
+import { trackClientError, trackEvent } from '@/lib/tracker';
 
 interface StorefrontProps {
   products: Product[];
@@ -18,6 +19,37 @@ interface StorefrontProps {
 
 export function Storefront({ products }: StorefrontProps) {
   const [isSizeGuideOpen, setIsSizeGuideOpen] = useState(false);
+
+  useEffect(() => {
+    trackEvent({ type: 'page_view' });
+
+    const onError = (event: ErrorEvent) => {
+      trackClientError({
+        message: event.message || 'Erreur JavaScript client',
+        stack: event.error instanceof Error ? event.error.stack : undefined,
+        url: window.location.href,
+      });
+    };
+
+    const onUnhandledRejection = (event: PromiseRejectionEvent) => {
+      const reason =
+        event.reason instanceof Error
+          ? event.reason.message
+          : String(event.reason ?? 'Promesse rejetée non gérée');
+      trackClientError({
+        message: `UnhandledRejection: ${reason}`,
+        stack: event.reason instanceof Error ? event.reason.stack : undefined,
+        url: window.location.href,
+      });
+    };
+
+    window.addEventListener('error', onError);
+    window.addEventListener('unhandledrejection', onUnhandledRejection);
+    return () => {
+      window.removeEventListener('error', onError);
+      window.removeEventListener('unhandledrejection', onUnhandledRejection);
+    };
+  }, []);
 
   return (
     <CartProvider>

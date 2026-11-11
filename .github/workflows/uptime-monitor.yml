@@ -1,0 +1,40 @@
+name: External Uptime & Health Probe
+
+on:
+  schedule:
+    # Vérifie la disponibilité externe toutes les 15 minutes
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+jobs:
+  uptime_probe:
+    name: Probe /api/health
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Production Endpoint Health
+        env:
+          SITE_URL: ${{ secrets.PRODUCTION_URL || 'https://momoshop.duckdns.org' }}
+          ALERT_WEBHOOK_URL: ${{ secrets.ALERT_WEBHOOK_URL || '' }}
+        run: |
+          set +e
+          HEALTH_URL="${SITE_URL%/}/api/health"
+          echo "➜ Probing $HEALTH_URL ..."
+
+          RESPONSE=$(curl -sS -w "\n%{http_code}" --max-time 12 "$HEALTH_URL")
+          CURL_EXIT=$?
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+          BODY=$(echo "$RESPONSE" | sed '$d')
+
+          if [ $CURL_EXIT -ne 0 ] || [ "$HTTP_CODE" != "200" ]; then
+            echo "🚨 Health check failed! Exit=$CURL_EXIT HTTP=$HTTP_CODE"
+            if [ -n "$ALERT_WEBHOOK_URL" ]; then
+              MSG="🚨 **[momoShop ALERTE UPTIME]** Le site $SITE_URL ne répond pas correctement (HTTP $HTTP_CODE / Exit $CURL_EXIT)."
+              curl -sS -X POST -H "Content-Type: application/json" \
+                -d "{\"content\": \"$MSG\", \"text\": \"$MSG\"}" \
+                "$ALERT_WEBHOOK_URL" || true
+            fi
+            exit 1
+          fi
+
+          echo "✓ Endpoint healthy (HTTP 200):"
+          echo "$BODY"

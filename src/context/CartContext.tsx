@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import type { CartItem, Product, Size } from '@/lib/types';
+import { trackEvent } from '@/lib/tracker';
 
 interface CartContextType {
   cart: CartItem[];
@@ -47,6 +48,16 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, [cart, hydrated]);
 
   const addToCart = (product: Product, size: Size, qty = 1) => {
+    trackEvent({
+      type: 'add_to_cart',
+      productId: product.id,
+      productName: product.name,
+      colorName: product.color.name,
+      colorHex: product.color.hex,
+      size,
+      qty,
+      amountCfa: product.price_cfa * qty,
+    });
     const key = `${product.id}-${size}`;
     setCart((prev) => {
       const existing = prev.find((item) => item.key === key);

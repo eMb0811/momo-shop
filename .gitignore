@@ -7,5 +7,7 @@ next-env.d.ts
 .env
 _legacy/
 screenshot*.png
+src/data/monitoring.json
+src/data/*.tmp
 .DS_Store
 Thumbs.db

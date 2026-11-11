@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import type { CategoryFilter, Product } from '@/lib/types';
+import { trackEvent } from '@/lib/tracker';
 import { ProductCard } from './ProductCard';
 import { ProductModal } from './ProductModal';
 import { SizeGuideModal } from './SizeGuideModal';
@@ -26,9 +27,21 @@ export function CatalogueSection({ products }: CatalogueSectionProps) {
   const popCount = products.filter((p) => p.color.category === 'pop').length;
   const natureCount = products.filter((p) => p.color.category === 'nature').length;
 
+  const handleSelectFilter = (nextFilter: CategoryFilter) => {
+    setFilter(nextFilter);
+    trackEvent({ type: 'filter_select', category: nextFilter });
+  };
+
   const handleOpenProduct = (product: Product) => {
     setSelectedProduct(product);
     setIsModalOpen(true);
+    trackEvent({
+      type: 'product_view',
+      productId: product.id,
+      productName: product.name,
+      colorName: product.color.name,
+      colorHex: product.color.hex,
+    });
   };
 
   const handleOpenSizeGuide = () => {
@@ -51,7 +64,7 @@ export function CatalogueSection({ products }: CatalogueSectionProps) {
           <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
             <button
               type="button"
-              onClick={() => setFilter('all')}
+              onClick={() => handleSelectFilter('all')}
               className={`rounded-full border-2 px-3 sm:px-4 py-1.5 sm:py-2 font-mono text-[0.72rem] sm:text-xs font-bold uppercase transition-all ${
                 filter === 'all'
                   ? 'border-ink bg-coral text-white shadow-pop'
@@ -62,7 +75,7 @@ export function CatalogueSection({ products }: CatalogueSectionProps) {
             </button>
             <button
               type="button"
-              onClick={() => setFilter('neutres')}
+              onClick={() => handleSelectFilter('neutres')}
               className={`rounded-full border-2 px-3 sm:px-4 py-1.5 sm:py-2 font-mono text-[0.72rem] sm:text-xs font-bold uppercase transition-all ${
                 filter === 'neutres'
                   ? 'border-ink bg-coral text-white shadow-pop'
@@ -73,7 +86,7 @@ export function CatalogueSection({ products }: CatalogueSectionProps) {
             </button>
             <button
               type="button"
-              onClick={() => setFilter('pop')}
+              onClick={() => handleSelectFilter('pop')}
               className={`rounded-full border-2 px-3 sm:px-4 py-1.5 sm:py-2 font-mono text-[0.72rem] sm:text-xs font-bold uppercase transition-all ${
                 filter === 'pop'
                   ? 'border-ink bg-coral text-white shadow-pop'
@@ -84,7 +97,7 @@ export function CatalogueSection({ products }: CatalogueSectionProps) {
             </button>
             <button
               type="button"
-              onClick={() => setFilter('nature')}
+              onClick={() => handleSelectFilter('nature')}
               className={`rounded-full border-2 px-3 sm:px-4 py-1.5 sm:py-2 font-mono text-[0.72rem] sm:text-xs font-bold uppercase transition-all ${
                 filter === 'nature'
                   ? 'border-ink bg-coral text-white shadow-pop'

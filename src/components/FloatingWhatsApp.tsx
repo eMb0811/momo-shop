@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { whatsappUrl } from '@/lib/shop';
+import { trackEvent } from '@/lib/tracker';
 
 export function FloatingWhatsApp() {
   const url = whatsappUrl(
@@ -17,6 +18,7 @@ export function FloatingWhatsApp() {
         href={url}
         target="_blank"
         rel="noopener noreferrer"
+        onClick={() => trackEvent({ type: 'whatsapp_floating_click' })}
         aria-label="Contacter momoShop sur WhatsApp"
         className="group relative flex h-12 w-12 sm:h-16 sm:w-16 items-center justify-center rounded-full border-2 border-ink bg-whatsapp text-ink shadow-[3px_3px_0_0_var(--color-ink)] sm:shadow-[4px_4px_0_0_var(--color-ink)] transition-transform duration-200 hover:scale-110 active:scale-95"
       >

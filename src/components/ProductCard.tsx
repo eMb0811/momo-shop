@@ -5,6 +5,7 @@ import Image from 'next/image';
 import type { Product, Size } from '@/lib/types';
 import { formatPrice, productOrderMessage, whatsappUrl } from '@/lib/shop';
 import { useCart } from '@/context/CartContext';
+import { trackEvent } from '@/lib/tracker';
 
 interface ProductCardProps {
   product: Product;
@@ -20,6 +21,16 @@ export function ProductCard({ product, onOpenModal }: ProductCardProps) {
   const isLowStock = currentStock > 0 && currentStock <= 5;
 
   const handleWhatsAppOrder = () => {
+    trackEvent({
+      type: 'whatsapp_product_order',
+      productId: product.id,
+      productName: product.name,
+      colorName: product.color.name,
+      colorHex: product.color.hex,
+      size: selectedSize,
+      qty: 1,
+      amountCfa: product.price_cfa,
+    });
     const text = productOrderMessage(product, selectedSize, 1);
     window.open(whatsappUrl(text), '_blank');
   };
