@@ -1,17 +1,24 @@
 import type { Metadata, Viewport } from 'next';
-import { Plus_Jakarta_Sans, Space_Grotesk, Syne } from 'next/font/google';
+import localFont from 'next/font/local';
 import './globals.css';
 
-const syne = Syne({ subsets: ['latin'], weight: ['700', '800'], variable: '--font-syne', display: 'swap' });
-const jakarta = Plus_Jakarta_Sans({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800'],
+const syne = localFont({
+  src: './fonts/Syne-Variable.woff2',
+  weight: '400 800',
+  variable: '--font-syne',
+  display: 'swap',
+});
+
+const jakarta = localFont({
+  src: './fonts/PlusJakartaSans-Variable.woff2',
+  weight: '400 800',
   variable: '--font-jakarta',
   display: 'swap',
 });
-const grotesk = Space_Grotesk({
-  subsets: ['latin'],
-  weight: ['500', '600', '700'],
+
+const grotesk = localFont({
+  src: './fonts/SpaceGrotesk-Variable.woff2',
+  weight: '400 700',
   variable: '--font-grotesk',
   display: 'swap',
 });
