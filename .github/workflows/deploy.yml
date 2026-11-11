@@ -58,7 +58,7 @@ jobs:
             git pull origin main
             
             echo "➜ Ensuring write permissions on src/data volume for container user..."
-            chmod -R a+rwX "$APP_DIR/src/data"
+            chmod -R a+rwX "$APP_DIR/src/data" 2>/dev/null || true
             
             echo "➜ Building and restarting Docker containers..."
             docker compose up -d --build --remove-orphans
