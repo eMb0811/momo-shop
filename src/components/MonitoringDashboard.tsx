@@ -361,14 +361,14 @@ export function MonitoringDashboard({ initialAuthorized }: { initialAuthorized: 
         <main className="relative z-10 my-auto mx-auto w-full max-w-md rounded-2xl border border-zinc-800/90 bg-zinc-900/75 backdrop-blur-xl p-6 sm:p-8 shadow-2xl">
           <div className="inline-flex items-center gap-2 rounded-full border border-orange-500/30 bg-orange-500/10 px-3 py-1 font-mono text-[0.68rem] font-semibold uppercase tracking-wider text-orange-400 mb-4">
             <span className="h-1.5 w-1.5 rounded-full bg-orange-400 animate-pulse" />
-            Console d&apos;Observabilité
+            Accès Privé Restreint
           </div>
 
           <h1 className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-white">
-            Connexion Monitoring
+            Authentification Requise
           </h1>
           <p className="mt-1.5 text-xs sm:text-sm text-zinc-400 leading-relaxed">
-            Accédez aux télémétries temps réel, à l&apos;entonnoir WhatsApp et à la gestion des stocks de{' '}
+            Cette console d&apos;administration est strictement réservée au propriétaire de{' '}
             <strong className="text-zinc-200">momoShop</strong>.
           </p>
 
@@ -378,7 +378,7 @@ export function MonitoringDashboard({ initialAuthorized }: { initialAuthorized: 
                 htmlFor="monitoring-password"
                 className="block font-mono text-xs font-medium text-zinc-300 mb-1.5"
               >
-                Clé d&apos;accès (<code className="text-orange-400">MONITORING_PASSWORD</code>)
+                Clé d&apos;accès administrateur
               </label>
               <input
                 id="monitoring-password"
@@ -405,11 +405,6 @@ export function MonitoringDashboard({ initialAuthorized }: { initialAuthorized: 
               {authLoading ? 'Authentification...' : 'Déverrouiller la Console →'}
             </button>
           </form>
-
-          <div className="mt-6 rounded-xl border border-zinc-800/80 bg-zinc-950/60 p-3.5 font-mono text-[0.7rem] text-zinc-400 leading-relaxed">
-            💡 Par défaut (si <code className="text-zinc-200">MONITORING_PASSWORD</code> n&apos;est pas défini dans <code className="text-zinc-200">.env</code>), utilisez :{' '}
-            <code className="text-orange-400 font-bold">momoshop-admin-2026</code>
-          </div>
         </main>
 
         <footer className="relative z-10 text-center font-mono text-xs text-zinc-500 py-4">
