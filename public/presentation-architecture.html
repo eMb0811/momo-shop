@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>momoShop — Masterclass Architecture & Monitoring</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #09090b;
+      --card-bg: rgba(24, 24, 27, 0.75);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --text: #f4f4f5;
+      --text-muted: #a1a1aa;
+      --orange: #f97316;
+      --orange-glow: rgba(249, 115, 22, 0.25);
+      --emerald: #10b981;
+      --sky: #0ea5e9;
+      --purple: #8b5cf6;
+      --font-display: 'Syne', sans-serif;
+      --font-sans: 'Plus Jakarta Sans', sans-serif;
+      --font-mono: 'Space Grotesk', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
+      user-select: none;
+    }
+
+    /* Ambient background glows */
+    .glow {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(140px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .glow-1 { top: -10%; left: 20%; width: 500px; height: 500px; background: var(--orange-glow); }
+    .glow-2 { bottom: -10%; right: 10%; width: 450px; height: 450px; background: rgba(16, 185, 129, 0.15); }
+
+    /* Main presentation wrapper */
+    .deck-container {
+      position: relative;
+      z-index: 10;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 2.5rem 3.5rem;
+    }
+
+    /* Top navigation header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 1.25rem;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .brand-icon {
+      width: 2.25rem;
+      height: 2.25rem;
+      border-radius: 0.5rem;
+      background: linear-gradient(135deg, var(--orange), #fbbf24);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 800;
+      color: #09090b;
+      font-size: 1.1rem;
+    }
+    .brand-title {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .brand-title span { color: var(--orange); }
+
+    .slide-indicator {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.05);
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      border: 1px solid var(--card-border);
+    }
+
+    /* Slides viewport */
+    .slides-viewport {
+      position: relative;
+      flex: 1;
+      margin: 1.5rem 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transform: translateY(20px) scale(0.98);
+      pointer-events: none;
+      transition: all 450ms cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .slide.active {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+    }
+
+    /* Slide Typography & Layouts */
+    .slide-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--orange);
+      background: rgba(249, 115, 22, 0.12);
+      border: 1px solid rgba(249, 115, 22, 0.3);
+      padding: 0.3rem 0.75rem;
+      border-radius: 9999px;
+      margin-bottom: 1rem;
+      width: fit-content;
+    }
+    .slide-title {
+      font-family: var(--font-display);
+      font-size: 2.75rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 0.75rem;
+    }
+    .slide-subtitle {
+      color: var(--text-muted);
+      font-size: 1.15rem;
+      max-width: 850px;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+
+    /* Cards Grid */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+      width: 100%;
+    }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 1.25rem;
+      padding: 1.5rem;
+      backdrop-filter: blur(20px);
+      transition: border-color 200ms ease, transform 200ms ease;
+    }
+    .card:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+    }
+    .card-icon {
+      font-size: 1.75rem;
+      margin-bottom: 0.75rem;
+    }
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: #fff;
+    }
+    .card-def {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--orange);
+      margin-bottom: 0.65rem;
+      line-height: 1.4;
+    }
+    .card-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    /* Comparison Table / Architecture Diagram */
+    .flow-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 1.25rem;
+      padding: 2rem;
+      margin-top: 1rem;
+    }
+    .flow-step {
+      flex: 1;
+      text-align: center;
+      padding: 1.25rem;
+      border-radius: 1rem;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--card-border);
+    }
+    .flow-arrow {
+      color: var(--orange);
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    /* Bottom navigation controls */
+    footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--card-border);
+      padding-top: 1.25rem;
+    }
+    .nav-hints {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .nav-btns {
+      display: flex;
+      gap: 0.75rem;
+    }
+    .btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      color: var(--text);
+      padding: 0.6rem 1.25rem;
+      border-radius: 0.75rem;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 180ms ease;
+    }
+    .btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+    .btn-primary {
+      background: var(--orange);
+      color: #09090b;
+      border: none;
+      font-weight: 700;
+    }
+    .btn-primary:hover {
+      background: #fb923c;
+    }
+  </style>
+</head>
+<body>
+  <div class="glow glow-1"></div>
+  <div class="glow glow-2"></div>
+
+  <div class="deck-container">
+    <header>
+      <div class="brand">
+        <div class="brand-icon">M</div>
+        <div class="brand-title">momo<span>Shop</span> • Architecture & Observabilité</div>
+      </div>
+      <div class="slide-indicator" id="slideIndicator">Slide 1 / 6</div>
+    </header>
+
+    <main class="slides-viewport">
+      <!-- SLIDE 1: INTRO & VISION -->
+      <section class="slide active">
+        <div class="slide-badge">Vision Globale</div>
+        <h1 class="slide-title">De la Boutique E-Commerce au Système Observé</h1>
+        <p class="slide-subtitle">
+          momoShop est une boutique moderne pour t-shirts en pur coton peigné mercerisé au Sénégal (21 nuances, coupe ajustée, col structuré) alliant expérience client fluide sur WhatsApp, conteneurisation Docker et monitoring en temps réel sans cookie.
+        </p>
+        <div class="cards-grid">
+          <div class="card">
+            <div class="card-icon">⚡</div>
+            <div class="card-title">Expérience Client Storefront</div>
+            <div class="card-def">Next.js 15 App Router + React 19 + Tailwind v4</div>
+            <div class="card-desc">Fiches produit réactives, sélection interactive des tailles (XS à XXL), panier persistent synchronisé et bouton de commande 1-clic direct sur WhatsApp.</div>
+          </div>
+          <div class="card">
+            <div class="card-icon">🐳</div>
+            <div class="card-title">Infrastructure Robuste</div>
+            <div class="card-def">Docker Multi-Stage + Caddy 2 SSL</div>
+            <div class="card-desc">Image Node.js Alpine légère (~130 Mo), certificats HTTPS automatiques Let's Encrypt et déploiement continu par GitHub Actions sur VPS.</div>
+          </div>
+          <div class="card">
+            <div class="card-icon">📊</div>
+            <div class="card-title">Moteur d'Observabilité</div>
+            <div class="card-def">momoPulse Engine (/monitoring)</div>
+            <div class="card-desc">Entonnoir de conversion temps réel respectueux de la vie privée (sans cookie traceur), surveillance de la RAM/CPU et gestion des stocks sans SSH.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 2: TECH STACK & DEFINITIONS -->
+      <section class="slide">
+        <div class="slide-badge">Dictionnaire & Stack Technique</div>
+        <h1 class="slide-title">Définitions & Rôles des Technologies</h1>
+        <p class="slide-subtitle">
+          Chaque outil a été sélectionné pour maximiser la vitesse, minimiser les coûts d'hébergement et garantir une autonomie technique totale.
+        </p>
+        <div class="cards-grid">
+          <div class="card">
+            <div class="card-icon">▲</div>
+            <div class="card-title">Next.js 15 & React 19</div>
+            <div class="card-def">Framework React Full-Stack & SSR</div>
+            <div class="card-desc">Gère à la fois le rendu des pages e-commerce et les routes API (/api/health, /api/monitoring/*) dans un processus serveur unique sans backend séparé.</div>
+          </div>
+          <div class="card">
+            <div class="card-icon">🔒</div>
+            <div class="card-title">Caddy Reverse Proxy</div>
+            <div class="card-def">Serveur Web & Gestionnaire SSL Automatique</div>
+            <div class="card-desc">Remplace Nginx avec zéro configuration de certificat : Caddy obtient et renouvelle les clés SSL Let's Encrypt tout en compressant les flux en Gzip/Zstandard.</div>
+          </div>
+          <div class="card">
+            <div class="card-icon">🐙</div>
+            <div class="card-title">GitHub Actions CI/CD</div>
+            <div class="card-def">Intégration & Déploiement Continus</div>
+            <div class="card-desc">Vérifie le typage TypeScript (tsc), compile le projet en environnement isolé et se connecte en SSH au VPS pour reconstruire les conteneurs Docker sans coupure.</div>
+          </div>
+          <div class="card">
+            <div class="card-icon">🎨</div>
+            <div class="card-title">Tailwind CSS v4</div>
+            <div class="card-def">Moteur de style atomique ultra-performant</div>
+            <div class="card-desc">Compilé nativement pour une vitesse de compilation maximale et une taille CSS minimale, avec injection directe des polices variables hébergées localement.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 3: ARCHITECTURE & MONITORING SANS COOKIE -->
+      <section class="slide">
+        <div class="slide-badge">Architecture & Innovation</div>
+        <h1 class="slide-title">L'Entonnoir E-Commerce Sans Cookie</h1>
+        <p class="slide-subtitle">
+          Comment mesurer précisément 100% des visites et conversions sans violer la vie privée ni imposer de bandeau cookie intrusif.
+        </p>
+        <div class="flow-container">
+          <div class="flow-step">
+            <div class="card-icon">📱</div>
+            <div class="card-title">1. Action Visiteur</div>
+            <div class="card-desc">Arrivée sur la boutique, vue d'une nuance ou clic WhatsApp.</div>
+          </div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-step">
+            <div class="card-icon">📡</div>
+            <div class="card-title">2. Balise Asynchrone</div>
+            <div class="card-desc">navigator.sendBeacon transmet l'événement en arrière-plan sans ralentir la page.</div>
+          </div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-step">
+            <div class="card-icon">🛡️</div>
+            <div class="card-title">3. Hash Quotidien</div>
+            <div class="card-desc">SHA-256 (IP + User-Agent + Sel éphémère). Aucun identifiant persistant stocké chez le client.</div>
+          </div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-step">
+            <div class="card-icon">💾</div>
+            <div class="card-title">4. Stockage JSON</div>
+            <div class="card-desc">Écriture atomique dans src/data/monitoring.json avec rotation automatique sur 90 jours.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 4: LE PIPELINE & RESOLUTION CI/CD -->
+      <section class="slide">
+        <div class="slide-badge">DevOps & Résolution de Problèmes</div>
+        <h1 class="slide-title">Le Pipeline CI/CD et la Résolution des Pannes</h1>
+        <p class="slide-subtitle">
+          Retour sur les défis techniques réels rencontrés et résolus lors de la mise en production.
+        </p>
+        <div class="cards-grid">
+          <div class="card">
+            <div class="card-icon">⚠️</div>
+            <div class="card-title">Le Piège Google Fonts</div>
+            <div class="card-desc">Sur les serveurs GitHub Actions Ubuntu, next/font/google échouait en build avec un TypeError réseau. Solution : téléchargement et auto-hébergement des polices .woff2 locales.</div>
+          </div>
+          <div class="card">
+            <div class="card-icon">🔑</div>
+            <div class="card-title">Gestion Droits Docker / VPS</div>
+            <div class="card-desc">Le conteneur Node.js tournant avec l'utilisateur sécurisé `nextjs` (UID 1001), les permissions du dossier `src/data` monté en volume ont été harmonisées dans deploy.yml.</div>
+          </div>
+          <div class="card">
+            <div class="card-icon">🛰️</div>
+            <div class="card-title">Double Sonde de Disponibilité</div>
+            <div class="card-desc">Une sonde locale intégrée (/api/health) vérifie la RAM, le CPU et l'intégrité des 21 images. Un cron GitHub Actions externe pinge l'URL toutes les 15 minutes.</div>
+          </div>
+          <div class="card">
+            <div class="card-icon">🔄</div>
+            <div class="card-title">Déploiement Zéro Interruption</div>
+            <div class="card-desc">Grâce aux directives healthcheck de Docker Compose, l'ancien conteneur continue de répondre jusqu'à ce que la nouvelle version soit 100% saine.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 5: SECURITE & CONSOLE ADMIN -->
+      <section class="slide">
+        <div class="slide-badge">Sécurité Avancée</div>
+        <h1 class="slide-title">Protection Exclusive de la Console /monitoring</h1>
+        <p class="slide-subtitle">
+          Le tableau de bord momoPulse est conçu pour être accessible uniquement par le gestionnaire de la boutique.
+        </p>
+        <div class="cards-grid">
+          <div class="card">
+            <div class="card-icon">🙈</div>
+            <div class="card-title">Invisibilité Publique</div>
+            <div class="card-desc">Aucun lien visible sur le site. Les balises d'indexation `noindex, nofollow` empêchent les moteurs de recherche d'indexer la route.</div>
+          </div>
+          <div class="card">
+            <div class="card-icon">🛑</div>
+            <div class="card-title">Bouclier Anti-Brute-Force</div>
+            <div class="card-desc">Le endpoint d'authentification bloque temporairement l'adresse IP pendant 15 minutes dès 5 tentatives infructueuses consécutives.</div>
+          </div>
+          <div class="card">
+            <div class="card-icon">🔐</div>
+            <div class="card-title">Session HttpOnly Sécurisée</div>
+            <div class="card-desc">Jeton cryptographique HMAC-SHA256 stocké dans un cookie avec attributs SameSite=Strict et Secure, inaccessible depuis le JavaScript navigateur.</div>
+          </div>
+          <div class="card">
+            <div class="card-icon">✏️</div>
+            <div class="card-title">Gestion Stocks & Prix Live</div>
+            <div class="card-desc">Possibilité de modifier directement les stocks par taille et les prix FCFA dans l'interface sans jamais avoir besoin d'ouvrir une session SSH sur le serveur.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 6: AMELIORATIONS FUTURES -->
+      <section class="slide">
+        <div class="slide-badge">Vision & Évolutions</div>
+        <h1 class="slide-title">Points d'Amélioration & Prochaines Étapes</h1>
+        <p class="slide-subtitle">
+          Les chantiers recommandés pour continuer à développer momoShop vers une solution e-commerce d'envergure.
+        </p>
+        <div class="cards-grid">
+          <div class="card">
+            <div class="card-icon">💳</div>
+            <div class="card-title">1. Paiement Mobile Money Direct</div>
+            <div class="card-def">Wave & Orange Money Checkout</div>
+            <div class="card-desc">Intégrer les APIs officielles Wave et Orange Money pour permettre au client de payer instantanément en ligne avant confirmation WhatsApp.</div>
+          </div>
+          <div class="card">
+            <div class="card-icon">🗄️</div>
+            <div class="card-title">2. Base de Données Dédiée</div>
+            <div class="card-def">PostgreSQL / Supabase</div>
+            <div class="card-desc">Migrer le fichier products.json et les logs de commandes vers une base SQL managée quand le volume quotidien dépassera les centaines de commandes.</div>
+          </div>
+          <div class="card">
+            <div class="card-icon">🔔</div>
+            <div class="card-title">3. Canal d'Alerte Push Actif</div>
+            <div class="card-def">Webhook Discord / Bot Telegram</div>
+            <div class="card-desc">Renseigner `ALERT_WEBHOOK_URL` dans le fichier .env sur le serveur pour recevoir une notification push immédiate sur mobile dès qu'un client clique sur WhatsApp.</div>
+          </div>
+          <div class="card">
+            <div class="card-icon">📦</div>
+            <div class="card-title">4. Suivi de Livraison Client</div>
+            <div class="card-def">Espace Suivi de Colis par Code SMS/WA</div>
+            <div class="card-desc">Fournir un code de commande unique (ex: MOMO-842) permettant aux clients dakarois de suivre en direct l'expédition de leur paquet de t-shirts.</div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="nav-hints">Touches clavier [←] et [→] ou boutons pour naviguer</div>
+      <div class="nav-btns">
+        <button class="btn" id="prevBtn" onclick="prevSlide()">← Précédent</button>
+        <button class="btn btn-primary" id="nextBtn" onclick="nextSlide()">Suivant →</button>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    const indicator = document.getElementById('slideIndicator');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    function updatePresentation() {
+      slides.forEach((slide, idx) => {
+        slide.classList.toggle('active', idx === currentSlide);
+      });
+      indicator.textContent = `Slide ${currentSlide + 1} / ${totalSlides}`;
+      prevBtn.style.opacity = currentSlide === 0 ? '0.4' : '1';
+      prevBtn.style.pointerEvents = currentSlide === 0 ? 'none' : 'auto';
+      nextBtn.textContent = currentSlide === totalSlides - 1 ? 'Recommencer ↺' : 'Suivant →';
+    }
+
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % totalSlides;
+      updatePresentation();
+    }
+
+    function prevSlide() {
+      if (currentSlide > 0) {
+        currentSlide--;
+        updatePresentation();
+      }
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'Space') nextSlide();
+      if (e.key === 'ArrowLeft') prevSlide();
+    });
+
+    updatePresentation();
+  </script>
+</body>
+</html>
