@@ -57,6 +57,9 @@ jobs:
             echo "➜ Pulling latest changes from Git..."
             git pull origin main
             
+            echo "➜ Ensuring write permissions on src/data volume for container user..."
+            chmod -R a+rwX "$APP_DIR/src/data"
+            
             echo "➜ Building and restarting Docker containers..."
             docker compose up -d --build --remove-orphans
             
