@@ -13,8 +13,8 @@ export function Header() {
       {/* Top Announcement Bar */}
       <div className="bg-ink text-acid font-mono text-[0.65rem] sm:text-xs font-bold tracking-[0.1em] sm:tracking-[0.12em] py-1.5 sm:py-2 px-3 text-center border-b border-ink/20">
         <div className="container-x flex items-center justify-center">
-          <span className="sm:hidden truncate">★ LIVRAISON DAKAR & EXPÉDITION RÉGIONS • COTON MERCERISÉ ★</span>
-          <span className="hidden sm:inline">★ BOUTIQUE URBAINE EN LIGNE • T-SHIRTS COUPE AJUSTÉE COTON MERCERISÉ • LIVRAISON DAKAR & EXPÉDITION RÉGIONS ★</span>
+          <span className="sm:hidden truncate">★ LIVRAISON 100% GRATUITE PARTOUT (DAKAR & RÉGIONS) • COTON MERCERISÉ ★</span>
+          <span className="hidden sm:inline">★ LIVRAISON 100% GRATUITE PARTOUT AU SÉNÉGAL (DAKAR 24H & RÉGIONS) • COTON MERCERISÉ 2 500 FCFA ★</span>
         </div>
       </div>
 

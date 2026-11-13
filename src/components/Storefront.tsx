@@ -6,7 +6,10 @@ import { CartProvider } from '@/context/CartContext';
 import { Header } from '@/components/Header';
 import { HeroCarousel } from '@/components/HeroCarousel';
 import { KineticMarquee } from '@/components/KineticMarquee';
+import { TrustSection } from '@/components/TrustSection';
 import { CatalogueSection } from '@/components/CatalogueSection';
+import { ReviewsSection } from '@/components/ReviewsSection';
+import { FaqSection } from '@/components/FaqSection';
 import { CartDrawer } from '@/components/CartDrawer';
 import { FloatingWhatsApp } from '@/components/FloatingWhatsApp';
 import { Footer } from '@/components/Footer';
@@ -57,14 +60,23 @@ export function Storefront({ products }: StorefrontProps) {
         <Header />
 
         <main className="flex-1">
-          {/* Zero-Text Hero Carousel */}
+          {/* Hero Carousel with Streetwear Typography & CTAs Overlay */}
           <HeroCarousel />
 
           {/* Kinetic Streetwear Marquee Bar */}
           <KineticMarquee />
 
+          {/* Reassurance Cards (100% Coton Mercerisé, 24h Express, Paiement Réception, Échange 48h) */}
+          <TrustSection />
+
           {/* Catalogue with Modern Filters & Product Cards */}
           <CatalogueSection products={products} />
+
+          {/* Verified Local Client Reviews in Dakar */}
+          <ReviewsSection />
+
+          {/* Interactive FAQ Accordion */}
+          <FaqSection />
         </main>
 
         <Footer onOpenSizeGuide={() => setIsSizeGuideOpen(true)} />

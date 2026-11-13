@@ -24,6 +24,7 @@ const grotesk = localFont({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://momoshop.sn'),
   title: {
     default: 'momoShop | T-Shirts Coupe Ajustée & Coton Mercerisé',
     template: '%s | momoShop',

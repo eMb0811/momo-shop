@@ -19,3 +19,8 @@ export function getProduct(idOrSlug: string): Product | undefined {
   const products = getProducts();
   return products.find((p) => p.id === idOrSlug || p.slug === idOrSlug);
 }
+
+export function getProductBySlug(slug: string): Product | undefined {
+  return getProduct(slug);
+}
+

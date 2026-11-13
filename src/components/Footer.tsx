@@ -45,6 +45,9 @@ export function Footer({ onOpenSizeGuide }: FooterProps) {
               <span className="border-b border-dashed border-ink/15 pb-1">
                 ✓ Commandes Directes & Suivi WhatsApp
               </span>
+              <span className="border-b border-dashed border-ink/15 pb-1 text-coral font-bold">
+                ✓ Livraison 100% Gratuite Partout au Sénégal 🎁
+              </span>
             </div>
           </div>
 
@@ -63,10 +66,10 @@ export function Footer({ onOpenSizeGuide }: FooterProps) {
             </ul>
           </div>
 
-          {/* Informations Col */}
+          {/* Informations & Légal Col */}
           <div>
             <h4 className="font-mono text-xs font-bold uppercase tracking-wider text-ink mb-4">
-              Informations
+              Informations & Légal
             </h4>
             <ul className="space-y-2 text-xs sm:text-sm text-muted">
               <li>
@@ -84,17 +87,29 @@ export function Footer({ onOpenSizeGuide }: FooterProps) {
                 </button>
               </li>
               <li>
-                <Link href="/confidentialite" className="hover:text-coral transition-colors">
-                  Politique de Confidentialité
+                <Link href="#faq" className="hover:text-coral transition-colors">
+                  Foire Aux Questions (FAQ)
                 </Link>
               </li>
               <li>
-                <a
-                  href="mailto:contact@momoshop.sn"
-                  className="hover:text-coral transition-colors"
-                >
-                  contact@momoshop.sn
-                </a>
+                <Link href="/livraison-retours" className="hover:text-coral transition-colors">
+                  Livraison & Retours 48h
+                </Link>
+              </li>
+              <li>
+                <Link href="/cgv" className="hover:text-coral transition-colors">
+                  Conditions Générales de Vente
+                </Link>
+              </li>
+              <li>
+                <Link href="/mentions-legales" className="hover:text-coral transition-colors">
+                  Mentions Légales
+                </Link>
+              </li>
+              <li>
+                <Link href="/confidentialite" className="hover:text-coral transition-colors">
+                  Politique de Confidentialité
+                </Link>
               </li>
             </ul>
           </div>
@@ -124,7 +139,19 @@ export function Footer({ onOpenSizeGuide }: FooterProps) {
         {/* Footer Bottom */}
         <div className="mt-12 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-ink/10 pt-6 text-xs text-muted font-mono">
           <p>© 2026 momoShop Sénégal 🇸🇳 • T-Shirts Coton Mercerisé Coupe Ajustée.</p>
-          <div className="flex gap-4">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+            <Link href="/mentions-legales" className="hover:text-ink transition-colors">
+              Mentions Légales
+            </Link>
+            <span>•</span>
+            <Link href="/cgv" className="hover:text-ink transition-colors">
+              CGV
+            </Link>
+            <span>•</span>
+            <Link href="/livraison-retours" className="hover:text-ink transition-colors">
+              Livraison & Retours
+            </Link>
+            <span>•</span>
             <Link href="/confidentialite" className="hover:text-ink transition-colors">
               Confidentialité
             </Link>

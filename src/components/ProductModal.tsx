@@ -273,6 +273,12 @@ export function ProductModal({
               <span className="font-medium">{product.dye}</span>
             </div>
           </div>
+
+          {/* Reassurance pill */}
+          <div className="mt-3 flex items-center justify-center gap-2 rounded-xl bg-acid/40 border border-ink/15 py-1.5 px-3 font-mono text-[0.68rem] text-ink font-semibold">
+            <span>🎁</span>
+            <span>Livraison 100% GRATUITE partout au Sénégal (Dakar & Régions)</span>
+          </div>
         </div>
       </div>
     </div>
