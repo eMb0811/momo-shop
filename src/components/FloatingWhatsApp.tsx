@@ -12,7 +12,7 @@ export function FloatingWhatsApp() {
   return (
     <aside
       aria-label="Contact WhatsApp Direct"
-      className="fixed bottom-3.5 right-3.5 sm:bottom-6 sm:right-6 z-40 flex items-center"
+      className="fixed bottom-3.5 right-3.5 sm:bottom-6 sm:right-6 z-40 hidden md:flex items-center"
     >
       <a
         href={url}

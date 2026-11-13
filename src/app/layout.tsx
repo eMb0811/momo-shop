@@ -32,10 +32,16 @@ export const metadata: Metadata = {
   description:
     'momoShop — boutique urbaine de t-shirts à col rond structuré et coupe ajustée en coton mercerisé. Commande directe sur WhatsApp.',
   icons: { icon: '/images/logo.png' },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'momoShop',
+  },
 };
 
 export const viewport: Viewport = {
-  themeColor: '#f6f4ee',
+  themeColor: '#0d0d11',
+  viewportFit: 'cover',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

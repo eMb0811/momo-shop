@@ -14,6 +14,10 @@ import { CartDrawer } from '@/components/CartDrawer';
 import { FloatingWhatsApp } from '@/components/FloatingWhatsApp';
 import { Footer } from '@/components/Footer';
 import { SizeGuideModal } from '@/components/SizeGuideModal';
+import { PwaRegister } from '@/components/PwaRegister';
+import { OfflineBanner } from '@/components/OfflineBanner';
+import { PwaInstallPrompt } from '@/components/PwaInstallPrompt';
+import { MobileBottomNav } from '@/components/MobileBottomNav';
 import { trackClientError, trackEvent } from '@/lib/tracker';
 
 interface StorefrontProps {
@@ -56,7 +60,13 @@ export function Storefront({ products }: StorefrontProps) {
 
   return (
     <CartProvider>
-      <div className="flex min-h-screen flex-col bg-canvas text-ink">
+      {/* PWA Service Worker Registration */}
+      <PwaRegister />
+
+      {/* Discrete Offline Notification Banner */}
+      <OfflineBanner />
+
+      <div className="flex min-h-screen flex-col bg-canvas text-ink pb-20 md:pb-0">
         <Header />
 
         <main className="flex-1">
@@ -84,8 +94,14 @@ export function Storefront({ products }: StorefrontProps) {
         {/* Global Slide-over Cart Drawer */}
         <CartDrawer />
 
-        {/* Floating WhatsApp Bubble */}
+        {/* Floating WhatsApp Bubble (Desktop only) */}
         <FloatingWhatsApp />
+
+        {/* Fixed Mobile Bottom Navigation Bar */}
+        <MobileBottomNav />
+
+        {/* PWA 1-Click / iOS Safari Install Prompt */}
+        <PwaInstallPrompt />
 
         {/* Root Size Guide Modal */}
         <SizeGuideModal
